@@ -1,0 +1,5 @@
+{
+  "name": "Cronograma de Viajes",
+  "description": "Una aplicación para generar y visualizar un cronograma de 12 meses basado en un ciclo recurrente de trabajo y descanso, destacando períodos de trabajo, días de descanso y fechas de vuelo.",
+  "requestFramePermissions": []
+}
