@@ -1,16 +1,16 @@
-# Dockerfile para servir sitios estáticos (SPAs)
 FROM nginx:alpine
 
-# 1. Copia tu configuración personalizada de Nginx
+# 1. Copy the custom MIME types file to the expected path
+COPY mime.types.custom /etc/nginx/mime.types.custom
+
+# 2. Copy the main configuration file
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# 2. LIMPIEZA: Elimina archivos preexistentes de Nginx
+# 3. Cleanup and copy website files
 RUN rm -rf /usr/share/nginx/html/*
-
-# 3. Copia TODO el contenido del repositorio al directorio raíz de Nginx
 COPY . /usr/share/nginx/html
 
 EXPOSE 80
 
-# 4. Inicia Nginx usando tu archivo de configuración personalizado
+# 4. Start Nginx using the custom configuration file
 CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
