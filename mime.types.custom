@@ -1,0 +1,13 @@
+# Custom MIME types for SPAs
+types {
+    # Ensure standard types are available
+    text/html                             html htm shtml;
+    text/css                              css;
+    text/xml                              xml;
+    image/gif                             gif;
+    image/jpeg                            jpeg jpg;
+    application/javascript                js;
+    
+    # 🔑 THE CRUCIAL FIX: Map .tsx and .ts to JavaScript
+    application/javascript                tsx ts;
+}
