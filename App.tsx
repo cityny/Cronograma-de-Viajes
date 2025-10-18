@@ -1,7 +1,11 @@
-
+// En el archivo App.tsx
 import React, { useState, useMemo } from 'react';
-import ControlPanel from './components/ControlPanel';
-import DynamicCalendar from './components/DynamicCalendar';
+// CAMBIAR: de './components/ControlPanel' a './components/ControlPanel.tsx'
+import ControlPanel from './components/ControlPanel.tsx'; 
+// CAMBIAR: de './components/DynamicCalendar' a './components/DynamicCalendar.tsx'
+import DynamicCalendar from './components/DynamicCalendar.tsx';
+
+// ... el resto del código
 
 const App: React.FC = () => {
     // Function to get today's date in YYYY-MM-DD format, ignoring timezone offsets
