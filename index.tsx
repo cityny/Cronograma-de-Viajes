@@ -1,7 +1,10 @@
-
+// En el archivo index.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+// CAMBIAR: de './App' a './App.tsx'
+import App from './App.tsx'; 
+
+// ... el resto del código
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
