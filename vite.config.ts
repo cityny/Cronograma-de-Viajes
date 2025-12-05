@@ -1,5 +1,3 @@
-// vite.config.ts
-
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 
@@ -16,14 +14,12 @@ export default defineConfig(({ mode }) => {
         }
       },
       server: {
-        host: '0.0.0.0',
-        port: 3000,
-        allowedHosts: true // ← Cambia aquí
+        host: true,  // ← CAMBIA ESTO
+        port: 3000
       },
       preview: {
-        host: '0.0.0.0',
-        port: 3000,
-        allowedHosts: true // ← Cambia aquí
+        host: true,  // ← CAMBIA ESTO
+        port: 3000
       }
     };
 });
