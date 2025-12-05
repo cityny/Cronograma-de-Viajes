@@ -14,12 +14,14 @@ export default defineConfig(({ mode }) => {
         }
       },
       server: {
-        host: true,  // ← CAMBIA ESTO
-        port: 3000
+        host: '0.0.0.0',
+        port: 3000,
+        allowedHosts: ['cityny-cronograma-viajes.s2gdvv.easypanel.host']
       },
       preview: {
-        host: true,  // ← CAMBIA ESTO
-        port: 3000
+        host: '0.0.0.0',
+        port: 3000,
+        allowedHosts: ['cityny-cronograma-viajes.s2gdvv.easypanel.host']
       }
     };
 });
