@@ -15,19 +15,15 @@ export default defineConfig(({ mode }) => {
           '@': path.resolve(__dirname, '.'),
         }
       },
-      // INICIO DEL CÓDIGO A AÑADIR/MODIFICAR
       server: {
-        host: '0.0.0.0', // Esencial para el HMR en contenedores
-        port: 3000
+        host: '0.0.0.0',
+        port: 3000,
+        allowedHosts: true // ← Cambia aquí
       },
       preview: {
-        host: '0.0.0.0', // Escucha en todas las interfaces del contenedor
+        host: '0.0.0.0',
         port: 3000,
-        allowedHosts: [
-          // Esto permite que el proxy de EasyPanel (Traefik) acceda
-          '*.easypanel.host' 
-        ]
+        allowedHosts: true // ← Cambia aquí
       }
-      // FIN DEL CÓDIGO A AÑADIR/MODIFICAR
     };
 });
