@@ -12,27 +12,7 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      },
-      // ELIMINA completamente las secciones server y preview
-      // y añade esto:
-      preview: {
-        host: '0.0.0.0',
-        port: 3000,
-        allowedHosts: [
-          'cityny-cronograma-viajes.s2gdvv.easypanel.host',
-          'localhost',
-          '0.0.0.0'
-        ]
-      },
-      // Esto es opcional pero buena práctica:
-      server: {
-        host: '0.0.0.0',
-        port: 3000,
-        allowedHosts: [
-          'cityny-cronograma-viajes.s2gdvv.easypanel.host',
-          'localhost',
-          '0.0.0.0'
-        ]
       }
+      // ¡NO pongas config de server o preview!
     };
 });
