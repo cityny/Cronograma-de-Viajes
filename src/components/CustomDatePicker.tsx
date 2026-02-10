@@ -82,7 +82,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({ value, onChange }) 
                 <div className="absolute z-[100] mt-2 left-0 right-0 md:left-auto md:w-80 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden animate-in fade-in zoom-in duration-200 origin-top">
                     <div className="p-4 bg-indigo-600 flex items-center justify-between text-white">
                         <button onClick={prevMonth} className="p-1 hover:bg-white/20 rounded-full transition-colors">
-                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor text-white">
+                            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
@@ -90,7 +90,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({ value, onChange }) 
                             {new Date(viewYear, viewMonth).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}
                         </h3>
                         <button onClick={nextMonth} className="p-1 hover:bg-white/20 rounded-full transition-colors">
-                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor text-white">
+                            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
@@ -101,6 +101,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({ value, onChange }) 
                             month={viewMonth}
                             getDayType={() => DayType.None}
                             onDateSelect={handleDateSelect}
+                            showTitle={false}
                         />
                     </div>
                     <div className="p-3 bg-gray-50 border-t border-gray-100 flex justify-end">

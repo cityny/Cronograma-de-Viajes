@@ -8,9 +8,10 @@ interface MonthViewProps {
     month: number; // 0-indexed
     getDayType: (date: Date) => DayType;
     onDateSelect: (date: Date) => void;
+    showTitle?: boolean;
 }
 
-const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSelect }) => {
+const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSelect, showTitle = true }) => {
     const renderDays = () => {
         const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
         const firstDayOfMonth = new Date(Date.UTC(year, month, 1)).getUTCDay();
@@ -55,9 +56,11 @@ const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSe
 
     return (
         <div className="flex flex-col">
-            <h3 className="text-lg font-semibold text-center mb-3 text-gray-800">
-                {MONTH_NAMES[month]} {year}
-            </h3>
+            {showTitle && (
+                <h3 className="text-lg font-semibold text-center mb-3 text-gray-800">
+                    {MONTH_NAMES[month]} {year}
+                </h3>
+            )}
             <div className="grid grid-cols-7 gap-1 text-center text-xs text-gray-900 font-medium mb-2 bg-purple-200 rounded-md py-2">
                 {DAY_NAMES_SHORT.map(day => <div key={day}>{day}</div>)}
             </div>
