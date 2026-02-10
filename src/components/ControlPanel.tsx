@@ -163,7 +163,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
                     <label className="flex items-center text-sm font-semibold text-gray-800 uppercase tracking-wider">
                         <HomeIcon className="w-4 h-4 mr-2" />
-                        Días de Descanso (Total)
+                        Días de Descanso
                         <InfoTooltip
                             text="Días totales de descanso (incluyendo viajes) antes de volver a trabajar."
                             example="9 días."
@@ -178,14 +178,14 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                         type="range"
                         id="rest-days"
                         min="1"
-                        max="30"
+                        max="60"
                         value={minRestDays}
                         onChange={onMinRestDaysChange}
                         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
                     />
                     <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium">
                         <span>1 DÍA</span>
-                        <span>30 DÍAS</span>
+                        <span>60 DÍAS</span>
                     </div>
                 </div>
             </div>
