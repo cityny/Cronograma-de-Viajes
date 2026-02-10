@@ -43,10 +43,10 @@ const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSe
                     let style = '';
                     switch (dayType) {
                         case DayType.Work:
-                            style = 'bg-blue-100/50 text-blue-700 font-medium';
+                            style = 'bg-blue-300/50 text-blue-700 font-medium';
                             break;
                         case DayType.Rest:
-                            style = 'bg-green-100/50 text-green-700 font-medium';
+                            style = 'bg-green-300/50 text-green-700 font-medium';
                             break;
                         case DayType.Departure:
                             style = 'bg-indigo-600 text-white font-bold shadow-md transform scale-105';
