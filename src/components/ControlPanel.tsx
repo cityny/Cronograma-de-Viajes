@@ -110,7 +110,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             </h2>
 
             <div className="mb-6">
-                <label className="flex items-center text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">
+                <label className="flex items-center text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wider">
                     <CalendarIcon className="w-4 h-4 mr-2" />
                     Seleccione Fecha de Inicio
                 </label>
@@ -122,7 +122,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
 
             <div className="mb-6">
                 <div className="flex justify-between items-center mb-3">
-                    <label className="flex items-center text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                    <label className="flex items-center text-sm font-semibold text-gray-800 uppercase tracking-wider">
                         <BriefcaseIcon className="w-4 h-4 mr-2" />
                         Días de Trabajo (Periodo)
                     </label>
@@ -148,7 +148,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             </div>
 
             <div className="mb-6">
-                <label className="flex items-center text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">
+                <label className="flex items-center text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wider">
                     <DepartureIcon className="w-4 h-4 mr-2" />
                     Día de Salida
                 </label>
@@ -166,7 +166,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             </div>
 
             <div className="mb-8">
-                <label className="flex items-center text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">
+                <label className="flex items-center text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wider">
                     <ReturnIcon className="w-4 h-4 mr-2" />
                     Día de Regreso
                 </label>
@@ -184,7 +184,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             </div>
 
             <div className="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                <h3 className="text-xs font-bold mb-4 text-gray-400 uppercase tracking-widest">Leyenda</h3>
+                <h3 className="text-xs font-bold mb-4 text-gray-800 uppercase tracking-widest">Leyenda</h3>
                 <ul className="space-y-4">
                     {LEGEND_ITEMS.map(item => (
                         <li key={item.label} className="flex items-center">

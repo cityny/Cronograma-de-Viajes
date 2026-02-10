@@ -36,7 +36,7 @@ const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSe
                 <div
                     key={day}
                     onClick={() => onDateSelect(currentDate)}
-                    className={`w-full h-12 flex flex-col items-center justify-center space-y-1 rounded-lg transition-transform duration-200 hover:scale-110 cursor-pointer ${style}`}
+                    className={`w-full h-12 flex flex-col items-center justify-center space-y-1 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-sm cursor-pointer ${style} ${dayType === DayType.None ? 'hover:bg-gray-300' : 'hover:brightness-95'}`}
                 >
                     <span className={`text-sm ${isToday ? 'font-bold ring-2 ring-offset-1 ring-blue-500 rounded-full w-6 h-6 flex items-center justify-center' : ''}`}>
                         {day}
