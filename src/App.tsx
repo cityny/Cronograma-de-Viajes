@@ -1,7 +1,7 @@
 // En el archivo App.tsx
 import React, { useState, useMemo } from 'react';
 // CAMBIAR: de './components/ControlPanel' a './components/ControlPanel.tsx'
-import ControlPanel from './components/ControlPanel.tsx'; 
+import ControlPanel from './components/ControlPanel.tsx';
 // CAMBIAR: de './components/DynamicCalendar' a './components/DynamicCalendar.tsx'
 import DynamicCalendar from './components/DynamicCalendar.tsx';
 
@@ -20,21 +20,26 @@ const App: React.FC = () => {
     const [startDateString, setStartDateString] = useState<string>(getTodayString());
     const [departureDay, setDepartureDay] = useState<number>(5); // Default to Friday
     const [returnDay, setReturnDay] = useState<number>(5);     // Default to Friday
+    const [workDays, setWorkDays] = useState<number>(21);      // Default to 21 days
 
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setStartDateString(e.target.value);
+    const handleDateChange = (date: string) => {
+        setStartDateString(date);
     };
 
     const handleCalendarDateSelect = (date: Date) => {
         setStartDateString(date.toISOString().split('T')[0]);
     };
 
-    const handleDepartureDayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setDepartureDay(Number(e.target.value));
+    const handleDepartureDayChange = (day: number) => {
+        setDepartureDay(day);
     };
 
-    const handleReturnDayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setReturnDay(Number(e.target.value));
+    const handleReturnDayChange = (day: number) => {
+        setReturnDay(day);
+    };
+
+    const handleWorkDaysChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setWorkDays(Number(e.target.value));
     };
 
     // Memoize the Date object to prevent unnecessary re-renders of the calendar
@@ -56,21 +61,24 @@ const App: React.FC = () => {
             <main className="container mx-auto p-4">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-1">
-                        <ControlPanel 
-                            startDateString={startDateString} 
-                            onDateChange={handleDateChange} 
+                        <ControlPanel
+                            startDateString={startDateString}
+                            onDateChange={handleDateChange}
                             departureDay={departureDay}
                             onDepartureDayChange={handleDepartureDayChange}
                             returnDay={returnDay}
                             onReturnDayChange={handleReturnDayChange}
+                            workDays={workDays}
+                            onWorkDaysChange={handleWorkDaysChange}
                         />
                     </div>
                     <div className="lg:col-span-3">
                         {startDate ? (
-                            <DynamicCalendar 
-                                startDate={startDate} 
+                            <DynamicCalendar
+                                startDate={startDate}
                                 departureDay={departureDay}
                                 returnDay={returnDay}
+                                workDays={workDays}
                                 onDateSelect={handleCalendarDateSelect}
                             />
                         ) : (

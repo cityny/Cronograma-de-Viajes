@@ -1,13 +1,14 @@
 
 import React, { useMemo } from 'react';
 import MonthView from './MonthView';
-import { WORK_DAYS } from '../constants';
-import { DayType } from '../types';
+import { WORK_DAYS } from '../constants/constants';
+import { DayType } from '../types/types';
 
 interface DynamicCalendarProps {
     startDate: Date;
     departureDay: number; // 0 for Sunday, ..., 6 for Saturday
     returnDay: number;
+    workDays: number;
     onDateSelect: (date: Date) => void;
 }
 
@@ -15,20 +16,20 @@ const toUTCDateString = (date: Date): string => {
     return date.toISOString().split('T')[0];
 };
 
-const DynamicCalendar: React.FC<DynamicCalendarProps> = ({ startDate, departureDay, returnDay, onDateSelect }) => {
+const DynamicCalendar: React.FC<DynamicCalendarProps> = ({ startDate, departureDay, returnDay, workDays, onDateSelect }) => {
     const dateTypeMap = useMemo(() => {
         const map = new Map<string, DayType>();
         if (!startDate) return map;
 
         let cycleStartDate = new Date(startDate);
-        
+
         const calendarEndDate = new Date(startDate);
         calendarEndDate.setUTCFullYear(calendarEndDate.getUTCFullYear() + 1);
 
         while (cycleStartDate < calendarEndDate) {
-            // Calculate nominal end of work period (21 days)
+            // Calculate nominal end of work period (dynamic workDays)
             const nominalWorkEnd = new Date(cycleStartDate);
-            nominalWorkEnd.setUTCDate(nominalWorkEnd.getUTCDate() + WORK_DAYS - 1);
+            nominalWorkEnd.setUTCDate(nominalWorkEnd.getUTCDate() + workDays - 1);
 
             // Find the next departure day based on user selection
             const dayOfWeek = nominalWorkEnd.getUTCDay();
@@ -59,16 +60,16 @@ const DynamicCalendar: React.FC<DynamicCalendarProps> = ({ startDate, departureD
                 map.set(toUTCDateString(currentDate), DayType.Rest);
                 currentDate.setUTCDate(currentDate.getUTCDate() + 1);
             }
-            
+
             map.set(toUTCDateString(returnDate), DayType.Return);
-            
+
             // Set start for the next cycle
             cycleStartDate = new Date(returnDate);
             cycleStartDate.setUTCDate(cycleStartDate.getUTCDate() + 1);
         }
 
         return map;
-    }, [startDate, departureDay, returnDay]);
+    }, [startDate, departureDay, returnDay, workDays]);
 
     const getDayType = (date: Date): DayType => {
         const dateString = toUTCDateString(date);

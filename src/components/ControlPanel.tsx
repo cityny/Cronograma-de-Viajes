@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { LEGEND_ITEMS, DAY_NAMES } from '../constants';
-import { DepartureIcon, ReturnIcon } from './Icons';
+import { LEGEND_ITEMS, DAY_NAMES } from '../constants/constants';
+import { DepartureIcon, ReturnIcon, CalendarIcon, BriefcaseIcon } from './Icons';
+import CustomDatePicker from './CustomDatePicker';
+import DaySelector from './DaySelector';
 
 // Declare jspdf and html2canvas to be available in the global scope from CDN
 declare const jspdf: any;
@@ -8,20 +10,24 @@ declare const html2canvas: any;
 
 interface ControlPanelProps {
     startDateString: string;
-    onDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onDateChange: (date: string) => void;
     departureDay: number;
-    onDepartureDayChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    onDepartureDayChange: (day: number) => void;
     returnDay: number;
-    onReturnDayChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    onReturnDayChange: (day: number) => void;
+    workDays: number;
+    onWorkDaysChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ControlPanel: React.FC<ControlPanelProps> = ({ 
-    startDateString, 
+const ControlPanel: React.FC<ControlPanelProps> = ({
+    startDateString,
     onDateChange,
     departureDay,
     onDepartureDayChange,
     returnDay,
-    onReturnDayChange
+    onReturnDayChange,
+    workDays,
+    onWorkDaysChange
 }) => {
     const [isCapturing, setIsCapturing] = useState(false);
 
@@ -44,10 +50,10 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 }
                 setIsCapturing(false);
                 setTimeout(() => {
-                     if (exportButton) {
+                    if (exportButton) {
                         exportButton.textContent = 'Crear PDF (Captura de Pantalla)';
                         (exportButton as HTMLButtonElement).disabled = false;
-                     }
+                    }
                 }, 2000);
                 return;
             }
@@ -68,7 +74,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 const imgWidth = canvas.width;
                 const imgHeight = canvas.height;
                 const orientation = imgWidth > imgHeight ? 'l' : 'p';
-                
+
                 const pdf = new jsPDF({
                     orientation: orientation,
                     unit: 'px',
@@ -79,7 +85,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 pdf.save('cronograma-captura.pdf');
             }).catch(error => {
                 console.error('Error al generar el PDF:', error);
-                 if (exportButton) {
+                if (exportButton) {
                     exportButton.textContent = 'Error al generar PDF';
                 }
             }).finally(() => {
@@ -93,95 +99,112 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             });
         }, 100);
     };
-    
+
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md sticky top-4">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Panel de Control</h2>
-            
+        <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 sticky top-4">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                <span className="bg-indigo-100 p-2 rounded-lg mr-3">
+                    <BriefcaseIcon className="w-6 h-6 text-indigo-600" />
+                </span>
+                Panel de Control
+            </h2>
+
             <div className="mb-6">
-                <label htmlFor="start-date" className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="flex items-center text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">
+                    <CalendarIcon className="w-4 h-4 mr-2" />
                     Seleccione Fecha de Inicio
                 </label>
-                <input
-                    type="date"
-                    id="start-date"
+                <CustomDatePicker
                     value={startDateString}
                     onChange={onDateChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
             </div>
 
             <div className="mb-6">
-                <label htmlFor="departure-day" className="block text-sm font-medium text-gray-600 mb-2">
-                    Día de Salida
-                </label>
-                {isCapturing ? (
-                     <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-800 shadow-sm">
-                        {DAY_NAMES[departureDay]}
+                <div className="flex justify-between items-center mb-3">
+                    <label className="flex items-center text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                        <BriefcaseIcon className="w-4 h-4 mr-2" />
+                        Días de Trabajo (Periodo)
+                    </label>
+                    <span className="bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        {workDays} días
+                    </span>
+                </div>
+                <div className="px-1">
+                    <input
+                        type="range"
+                        id="work-days"
+                        min="1"
+                        max="60"
+                        value={workDays}
+                        onChange={onWorkDaysChange}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                    />
+                    <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium">
+                        <span>1 DÍA</span>
+                        <span>60 DÍAS</span>
                     </div>
-                ) : (
-                    <select
-                        id="departure-day"
-                        value={departureDay}
-                        onChange={onDepartureDayChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-label="Seleccionar día de salida"
-                    >
-                        {DAY_NAMES.map((day, index) => (
-                            <option key={index} value={index}>{day}</option>
-                        ))}
-                    </select>
-                )}
+                </div>
             </div>
 
             <div className="mb-6">
-                <label htmlFor="return-day" className="block text-sm font-medium text-gray-600 mb-2">
-                    Día de Regreso
+                <label className="flex items-center text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">
+                    <DepartureIcon className="w-4 h-4 mr-2" />
+                    Día de Salida
                 </label>
-                 {isCapturing ? (
-                     <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-800 shadow-sm">
-                        {DAY_NAMES[returnDay]}
+                {isCapturing ? (
+                    <div className="w-full px-3 py-2 border border-gray-200 rounded-xl bg-gray-50 text-gray-800 font-bold">
+                        {DAY_NAMES[departureDay]}
                     </div>
                 ) : (
-                    <select
-                        id="return-day"
-                        value={returnDay}
-                        onChange={onReturnDayChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        aria-label="Seleccionar día de regreso"
-                    >
-                        {DAY_NAMES.map((day, index) => (
-                            <option key={index} value={index}>{day}</option>
-                        ))}
-                    </select>
+                    <DaySelector
+                        value={departureDay}
+                        onChange={onDepartureDayChange}
+                        activeColor="blue"
+                    />
                 )}
             </div>
 
             <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-3 text-gray-700">Leyenda de Colores</h3>
-                <ul className="space-y-3">
+                <label className="flex items-center text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">
+                    <ReturnIcon className="w-4 h-4 mr-2" />
+                    Día de Regreso
+                </label>
+                {isCapturing ? (
+                    <div className="w-full px-3 py-2 border border-gray-200 rounded-xl bg-gray-50 text-gray-800 font-bold">
+                        {DAY_NAMES[returnDay]}
+                    </div>
+                ) : (
+                    <DaySelector
+                        value={returnDay}
+                        onChange={onReturnDayChange}
+                        activeColor="purple"
+                    />
+                )}
+            </div>
+
+            <div className="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <h3 className="text-xs font-bold mb-4 text-gray-400 uppercase tracking-widest">Leyenda</h3>
+                <ul className="space-y-4">
                     {LEGEND_ITEMS.map(item => (
                         <li key={item.label} className="flex items-center">
-                            <span className={`w-5 h-5 rounded-full mr-3 ${item.color} flex items-center justify-center`}>
+                            <span className={`w-6 h-6 rounded-lg mr-3 ${item.color} flex items-center justify-center shadow-sm`}>
                                 {item.label.includes('Salida') && <DepartureIcon className="w-3 h-3 text-white" />}
                                 {item.label.includes('Regreso') && <ReturnIcon className="w-3 h-3 text-white" />}
                             </span>
-                            <span className="text-sm text-gray-600">{item.label}</span>
+                            <span className="text-sm font-medium text-gray-600">{item.label}</span>
                         </li>
                     ))}
                 </ul>
             </div>
-            
-            <div>
-                <h3 className="text-lg font-semibold mb-3 text-gray-700">Exportar</h3>
-                <button
-                    id="export-screenshot-button"
-                    onClick={handleExportScreenshot}
-                    className="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
-                >
-                    Crear PDF
-                </button>
-            </div>
+
+            <button
+                id="export-screenshot-button"
+                onClick={handleExportScreenshot}
+                className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-indigo-200 hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+                Exportar Calendario (PDF)
+            </button>
         </div>
     );
 };

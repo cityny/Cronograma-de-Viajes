@@ -1,6 +1,6 @@
 import React from 'react';
-import { DAY_NAMES_SHORT, MONTH_NAMES, DAY_TYPE_STYLES } from '../constants';
-import { DayType } from '../types';
+import { DAY_NAMES_SHORT, MONTH_NAMES, DAY_TYPE_STYLES } from '../constants/constants';
+import { DayType } from '../types/types';
 import { DepartureIcon, ReturnIcon } from './Icons';
 
 interface MonthViewProps {
@@ -33,7 +33,7 @@ const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSe
             const isToday = year === today.getFullYear() && month === today.getMonth() && day === today.getDate();
 
             return (
-                <div 
+                <div
                     key={day}
                     onClick={() => onDateSelect(currentDate)}
                     className={`w-full h-12 flex flex-col items-center justify-center space-y-1 rounded-lg transition-transform duration-200 hover:scale-110 cursor-pointer ${style}`}
