@@ -4,10 +4,11 @@ import { InfoIcon } from './Icons';
 interface InfoTooltipProps {
     text: string;
     example?: string;
-    position?: 'center' | 'left' | 'right'; // Backward compatibility, but auto override preferred
+    position?: 'center' | 'left' | 'right';
+    side?: 'top' | 'bottom';
 }
 
-const InfoTooltip: React.FC<InfoTooltipProps> = ({ text, example }) => {
+const InfoTooltip: React.FC<InfoTooltipProps> = ({ text, example, side = 'top' }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [alignment, setAlignment] = useState<'left' | 'center' | 'right'>('center');
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -18,24 +19,24 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ text, example }) => {
             const tooltipWidth = 224; // w-56 = 14rem = 224px
             const windowWidth = window.innerWidth;
 
-            // Check right edge
             if (rect.left + (tooltipWidth / 2) > windowWidth - 20) {
                 setAlignment('right');
-            }
-            // Check left edge
-            else if (rect.left - (tooltipWidth / 2) < 20) {
+            } else if (rect.left - (tooltipWidth / 2) < 20) {
                 setAlignment('left');
-            }
-            // Default center
-            else {
+            } else {
                 setAlignment('center');
             }
         }
     }, [isVisible]);
 
-    // Determine classes based on alignment
-    let containerClasses = "absolute z-50 bottom-full mb-2 w-56 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl animate-fade-in-up transition-all duration-200";
-    let arrowClasses = "absolute top-100 -mt-1 border-[6px] border-transparent border-t-gray-900";
+    // Determine classes based on side and alignment
+    const isBottom = side === 'bottom';
+
+    let containerClasses = `absolute z-50 w-56 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl transition-all duration-200 ${isBottom ? 'top-full mt-2 animate-fade-in-down' : 'bottom-full mb-2 animate-fade-in-up'
+        }`;
+
+    let arrowClasses = `absolute border-[6px] border-transparent ${isBottom ? 'bottom-full mb-0 border-b-gray-900' : 'top-100 -mt-1 border-t-gray-900'
+        }`;
 
     if (alignment === 'center') {
         containerClasses += " left-1/2 transform -translate-x-1/2";
