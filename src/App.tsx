@@ -57,9 +57,10 @@ const App: React.FC = () => {
                         />
                     </h1>
                     <div className="mt-2 flex items-center text-xs text-gray-500 font-medium">
-                        Desarrollado por:
+                        Desarrollado por: <br />
+                        <h2 className="text-xs text-gray-500 font-medium">Dionny Nuñez</h2><br />
                         <a href="https://cityny.github.io/cityny/index.html" target="_blank" rel="noopener noreferrer" className="ml-2 hover:opacity-80 transition-opacity">
-                            <img src={LogoCityNy} alt="CityNy Logo" className="h-6 w-auto" />
+                            <img src={LogoCityNy} alt="CityNy Logo" className="h-12 w-auto" />
                         </a>
                     </div>
                 </div>
