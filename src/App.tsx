@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import ControlPanel from './components/ControlPanel';
 import DynamicCalendar from './components/DynamicCalendar';
 import { getTodayString } from './utils/dateUtils';
+import ScrollToTop from './components/ScrollToTop';
 
 const App: React.FC = () => {
     const [startDateString, setStartDateString] = useState<string>(getTodayString());
@@ -84,6 +85,7 @@ const App: React.FC = () => {
                     </div>
                 </div>
             </main>
+            <ScrollToTop />
         </div>
     );
 };

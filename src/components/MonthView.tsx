@@ -88,8 +88,7 @@ const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSe
                     {adjustments.map((adj, idx) => (
                         <div key={idx} className="text-[10px] text-amber-600 font-bold flex items-center bg-amber-50 p-1.5 rounded-md border border-amber-100">
                             <span className="mr-1">⚠️</span>
-                            {/* Format date as simple DD/MM for context */}
-                            {new Date(adj.date).getUTCDate()}/{new Date(adj.date).getUTCMonth() + 1}: +{adj.daysAdded}d (Regreso {adj.targetDayName})
+                            Nota: +{adj.daysAdded} {adj.daysAdded === 1 ? 'día' : 'días'} adicional para regresar en {adj.targetDayName}
                         </div>
                     ))}
                 </div>
