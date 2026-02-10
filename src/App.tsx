@@ -4,6 +4,7 @@ import DynamicCalendar from './components/DynamicCalendar';
 import { getTodayString } from './utils/dateUtils';
 import ScrollToTop from './components/ScrollToTop';
 import InfoTooltip from './components/InfoTooltip';
+import LogoCityNy from './assets/Logo_CityNy.gif';
 
 const App: React.FC = () => {
     const [startDateString, setStartDateString] = useState<string>(getTodayString());
@@ -55,6 +56,12 @@ const App: React.FC = () => {
                             text="Es una aplicación web interactiva diseñada para calcular y visualizar itinerarios de viaje basados en ciclos de trabajo rotativos. Permite a los usuarios definir su fecha de inicio, días de salida/regreso y duración del periodo laboral para generar automáticamente un calendario anual."
                         />
                     </h1>
+                    <div className="mt-2 flex items-center text-xs text-gray-500 font-medium">
+                        Desarrollado por:
+                        <a href="https://cityny.github.io/cityny/index.html" target="_blank" rel="noopener noreferrer" className="ml-2 hover:opacity-80 transition-opacity">
+                            <img src={LogoCityNy} alt="CityNy Logo" className="h-6 w-auto" />
+                        </a>
+                    </div>
                 </div>
             </header>
             <main className="container mx-auto p-4">

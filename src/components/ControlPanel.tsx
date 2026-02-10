@@ -152,7 +152,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                         onChange={onWorkDaysChange}
                         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium">
+                    <div className="flex justify-between text-[10px] text-gray-800 mt-2 font-medium">
                         <span>1 DÍA</span>
                         <span>60 DÍAS</span>
                     </div>
@@ -183,7 +183,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                         onChange={onMinRestDaysChange}
                         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
                     />
-                    <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium">
+                    <div className="flex justify-between text-[10px] text-gray-800 mt-2 font-medium">
                         <span>1 DÍA</span>
                         <span>60 DÍAS</span>
                     </div>
