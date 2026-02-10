@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LEGEND_ITEMS, DAY_NAMES } from '../constants/constants';
-import { DepartureIcon, ReturnIcon, CalendarIcon, BriefcaseIcon } from './Icons';
+import { DepartureIcon, ReturnIcon, CalendarIcon, BriefcaseIcon, HomeIcon } from './Icons';
 import CustomDatePicker from './CustomDatePicker';
 import DaySelector from './DaySelector';
 
@@ -13,10 +13,14 @@ interface ControlPanelProps {
     onDateChange: (date: string) => void;
     departureDay: number;
     onDepartureDayChange: (day: number) => void;
-    returnDay: number;
-    onReturnDayChange: (day: number) => void;
+    returnDay: number | null;
+    onReturnDayChange: (day: number | null) => void;
+    returnDay: number | null;
+    onReturnDayChange: (day: number | null) => void;
     workDays: number;
     onWorkDaysChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    minRestDays?: number;
+    onMinRestDaysChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -27,7 +31,9 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
     returnDay,
     onReturnDayChange,
     workDays,
-    onWorkDaysChange
+    onWorkDaysChange,
+    minRestDays = 7,
+    onMinRestDaysChange = () => { }
 }) => {
     const [isCapturing, setIsCapturing] = useState(false);
 
@@ -148,6 +154,33 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             </div>
 
             <div className="mb-6">
+                <div className="flex justify-between items-center mb-3">
+                    <label className="flex items-center text-sm font-semibold text-gray-800 uppercase tracking-wider">
+                        <HomeIcon className="w-4 h-4 mr-2" />
+                        Días de Descanso (Total)
+                    </label>
+                    <span className="bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        {minRestDays} días
+                    </span>
+                </div>
+                <div className="px-1">
+                    <input
+                        type="range"
+                        id="rest-days"
+                        min="1"
+                        max="30"
+                        value={minRestDays}
+                        onChange={onMinRestDaysChange}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                    />
+                    <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium">
+                        <span>1 DÍA</span>
+                        <span>30 DÍAS</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="mb-6">
                 <label className="flex items-center text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wider">
                     <DepartureIcon className="w-4 h-4 mr-2" />
                     Día de Salida
@@ -166,22 +199,44 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             </div>
 
             <div className="mb-8">
-                <label className="flex items-center text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wider">
-                    <ReturnIcon className="w-4 h-4 mr-2" />
-                    Día de Regreso
-                </label>
-                {isCapturing ? (
-                    <div className="w-full px-3 py-2 border border-gray-200 rounded-xl bg-gray-50 text-gray-800 font-bold">
-                        {DAY_NAMES[returnDay]}
+                <div className="flex justify-between items-center mb-3">
+                    <label className="flex items-center text-sm font-semibold text-gray-800 uppercase tracking-wider">
+                        <ReturnIcon className="w-4 h-4 mr-2" />
+                        Día de Regreso
+                    </label>
+                    <div className="flex items-center space-x-2">
+                        <span className={`text-xs font-bold ${returnDay === null ? 'text-indigo-600' : 'text-gray-400'}`}>Auto</span>
+                        <button
+                            onClick={() => onReturnDayChange(returnDay === null ? 0 : null)} // Default to Sunday (0) if switching to manual
+                            className={`w-10 h-5 rounded-full flex items-center transition-colors duration-300 focus:outline-none ${returnDay !== null ? 'bg-indigo-600' : 'bg-gray-300'}`}
+                        >
+                            <div
+                                className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${returnDay !== null ? 'translate-x-5' : 'translate-x-1'}`}
+                            />
+                        </button>
+                        <span className={`text-xs font-bold ${returnDay !== null ? 'text-indigo-600' : 'text-gray-400'}`}>Manual</span>
+                    </div>
+                </div>
+
+                {returnDay === null ? (
+                    <div className="w-full px-3 py-2 border border-dashed border-gray-300 rounded-xl bg-gray-50 text-gray-500 text-sm italic text-center">
+                        Calculado automáticamente por días de descanso
                     </div>
                 ) : (
-                    <DaySelector
-                        value={returnDay}
-                        onChange={onReturnDayChange}
-                        activeColor="purple"
-                    />
+                    isCapturing ? (
+                        <div className="w-full px-3 py-2 border border-gray-200 rounded-xl bg-gray-50 text-gray-800 font-bold">
+                            {DAY_NAMES[returnDay]}
+                        </div>
+                    ) : (
+                        <DaySelector
+                            value={returnDay}
+                            onChange={(day) => onReturnDayChange(day)}
+                            activeColor="purple"
+                        />
+                    )
                 )}
             </div>
+
 
             <div className="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
                 <h3 className="text-xs font-bold mb-4 text-gray-800 uppercase tracking-widest">Leyenda</h3>

@@ -2,7 +2,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 // CAMBIAR: de './App' a './App.tsx'
-import App from './App.tsx'; 
+import App from './App.tsx';
+import './styles/index.css';
 
 // ... el resto del código
 

@@ -1,26 +1,14 @@
-// En el archivo App.tsx
 import React, { useState, useMemo } from 'react';
-// CAMBIAR: de './components/ControlPanel' a './components/ControlPanel.tsx'
-import ControlPanel from './components/ControlPanel.tsx';
-// CAMBIAR: de './components/DynamicCalendar' a './components/DynamicCalendar.tsx'
-import DynamicCalendar from './components/DynamicCalendar.tsx';
-
-// ... el resto del código
+import ControlPanel from './components/ControlPanel';
+import DynamicCalendar from './components/DynamicCalendar';
+import { getTodayString } from './utils/dateUtils';
 
 const App: React.FC = () => {
-    // Function to get today's date in YYYY-MM-DD format, ignoring timezone offsets
-    const getTodayString = () => {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    };
-
     const [startDateString, setStartDateString] = useState<string>(getTodayString());
     const [departureDay, setDepartureDay] = useState<number>(5); // Default to Friday
-    const [returnDay, setReturnDay] = useState<number>(5);     // Default to Friday
+    const [returnDay, setReturnDay] = useState<number | null>(null); // Default to Auto (null)
     const [workDays, setWorkDays] = useState<number>(21);      // Default to 21 days
+    const [minRestDays, setMinRestDays] = useState<number>(9); // Default to 9 days total
 
     const handleDateChange = (date: string) => {
         setStartDateString(date);
@@ -34,12 +22,16 @@ const App: React.FC = () => {
         setDepartureDay(day);
     };
 
-    const handleReturnDayChange = (day: number) => {
+    const handleReturnDayChange = (day: number | null) => {
         setReturnDay(day);
     };
 
     const handleWorkDaysChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setWorkDays(Number(e.target.value));
+    };
+
+    const handleMinRestDaysChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setMinRestDays(Number(e.target.value));
     };
 
     // Memoize the Date object to prevent unnecessary re-renders of the calendar
@@ -70,6 +62,8 @@ const App: React.FC = () => {
                             onReturnDayChange={handleReturnDayChange}
                             workDays={workDays}
                             onWorkDaysChange={handleWorkDaysChange}
+                            minRestDays={minRestDays}
+                            onMinRestDaysChange={handleMinRestDaysChange}
                         />
                     </div>
                     <div className="lg:col-span-3">
@@ -79,6 +73,7 @@ const App: React.FC = () => {
                                 departureDay={departureDay}
                                 returnDay={returnDay}
                                 workDays={workDays}
+                                minRestDays={minRestDays}
                                 onDateSelect={handleCalendarDateSelect}
                             />
                         ) : (

@@ -1,20 +1,79 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+  <h1 align="center">Cronograma de Viajes</h1>
+  <p align="center">Planificador inteligente de ciclos de trabajo y descanso para profesionales viajeros.</p>
 </div>
 
-# Run and deploy your AI Studio app
+---
 
-This contains everything you need to run your app locally.
+## 📋 Descripción
 
-View your app in AI Studio: https://ai.studio/apps/drive/1M8Eh0CSeo9pYzBJOHh-VH_08mtJGH1E8
+**Cronograma de Viajes** es una aplicación web interactiva diseñada para calcular y visualizar itinerarios de viaje basados en ciclos de trabajo rotativos. Permite a los usuarios definir su fecha de inicio, días de salida/regreso y duración del periodo laboral para generar automáticamente un calendario anual.
 
-## Run Locally
+### 💡 Ejemplos Prácticos de Uso
 
-**Prerequisites:**  Node.js
+**Caso 1: Turno Minero 14x7**
+Un trabajador que labora 14 días consecutivos y descansa 7.
+- **Días de Trabajo**: 14 días.
+- **Salida**: Jueves (para viajar el día 15).
+- **Regreso**: Jueves siguiente (7 días después).
 
+**Caso 2: Consultor Semanal (5x2)**
+Un profesional que viaja a casa cada fin de semana.
+- **Días de Trabajo**: 5 días (Lunes a Viernes).
+- **Salida**: Viernes tarde.
+- **Regreso**: Domingo tarde (para reiniciar el lunes).
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## ✨ Características Principales
+
+- **Calendario Dinámico**: Generación automática de ciclos de 12 meses.
+- **Configuración Flexible**:
+  - Personalización de días de trabajo (1-60 días).
+  - Selección inteligente de días de vuelo (salida y regreso).
+- **Interfaz Moderna**:
+  - Diseño limpio y responsive.
+  - Iconografía intuitiva para estados de viaje.
+  - Controles táctiles "swipe" para selección de días.
+- **Exportación**: Capacidad de exportar el cronograma visualizado a PDF.
+
+## 🛠️ Tecnologías
+
+- **Core**: React 19, TypeScript, Vite.
+- **Estilos**: Tailwind CSS 3.
+- **Utilidades**: html2canvas, jspdf.
+
+## 🚀 Instalación y Uso
+
+1. **Clonar el repositorio**:
+   ```bash
+   git clone https://github.com/tu-usuario/cronograma-viajes.git
+   ```
+
+2. **Instalar dependencias**:
+   ```bash
+   npm install
+   ```
+
+3. **Ejecutar en desarrollo**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Construir para producción**:
+   ```bash
+   npm run build
+   ```
+
+## 📂 Estructura del Proyecto
+
+```
+src/
+├── components/   # Componentes de UI (Calendario, Controles, etc.)
+├── hooks/        # Lógica de negocio reutilizable (useTravelCycles)
+├── utils/        # Funciones auxiliares (dateUtils)
+├── styles/       # Estilos globales
+├── constants/    # Constantes de configuración
+└── types/        # Definiciones de tipos TypeScript
+```
+
+---
+Desarrollado con ❤️ para optimizar la planificación de viajes.

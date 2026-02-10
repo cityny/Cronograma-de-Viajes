@@ -1,0 +1,16 @@
+/* 
+ * Tailwind CSS is loaded via CDN in index.html.
+ * This file is for custom global styles that are not covered by Tailwind utilities.
+ */
+
+/* Custom scrollbar for DaySelector to hide scrollbar but keep functionality */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}

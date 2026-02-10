@@ -9,64 +9,89 @@ interface MonthViewProps {
     getDayType: (date: Date) => DayType;
     onDateSelect: (date: Date) => void;
     showTitle?: boolean;
+    adjustments?: Array<{ date: string, daysAdded: number, targetDayName: string }>;
 }
 
-const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSelect, showTitle = true }) => {
-    const renderDays = () => {
-        const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
-        const firstDayOfMonth = new Date(Date.UTC(year, month, 1)).getUTCDay();
-
-        const blanks = Array(firstDayOfMonth).fill(null);
-        const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-
-        const allCells = [...blanks, ...days];
-
-        return allCells.map((day, index) => {
-            if (day === null) {
-                return <div key={`blank-${index}`} className="w-full h-12"></div>;
-            }
-
-            const currentDate = new Date(Date.UTC(year, month, day));
-            const dayType = getDayType(currentDate);
-            const style = DAY_TYPE_STYLES[dayType];
-
-            const today = new Date();
-            const isToday = year === today.getFullYear() && month === today.getMonth() && day === today.getDate();
-
-            return (
-                <div
-                    key={day}
-                    onClick={() => onDateSelect(currentDate)}
-                    className={`w-full h-12 flex flex-col items-center justify-center space-y-1 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-sm cursor-pointer ${style} ${dayType === DayType.None ? 'hover:bg-gray-300' : 'hover:brightness-95'}`}
-                >
-                    <span className={`text-sm ${isToday ? 'font-bold ring-2 ring-offset-1 ring-blue-500 rounded-full w-6 h-6 flex items-center justify-center' : ''}`}>
-                        {day}
-                    </span>
-                    {(dayType === DayType.Departure || dayType === DayType.Return) && (
-                        // Removed absolute positioning to allow flexbox to stack the icon below the number
-                        <div>
-                            {dayType === DayType.Departure && <DepartureIcon className="w-3 h-3 text-white opacity-90" />}
-                            {dayType === DayType.Return && <ReturnIcon className="w-3 h-3 text-white opacity-90" />}
-                        </div>
-                    )}
-                </div>
-            );
-        });
-    };
+const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSelect, showTitle = true, adjustments = [] }) => {
+    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Corrected to get days in current month
+    const firstDayOfMonth = new Date(year, month, 1).getDay(); // 0 is Sunday, 0-indexed month
 
     return (
-        <div className="flex flex-col">
-            {showTitle && (
-                <h3 className="text-lg font-semibold text-center mb-3 text-gray-800">
-                    {MONTH_NAMES[month]} {year}
-                </h3>
-            )}
+        <div className="border border-gray-200 rounded-xl p-4 bg-gray-50/50 hover:bg-white transition-colors duration-300">
+            {showTitle && <h3 className="text-lg font-bold text-gray-800 mb-4 capitalize text-center">{new Date(year, month).toLocaleString('es-ES', { month: 'long', year: 'numeric' })}</h3>}
+
             <div className="grid grid-cols-7 gap-1 text-center text-xs text-gray-900 font-medium mb-2 bg-purple-200 rounded-md py-2">
-                {DAY_NAMES_SHORT.map(day => <div key={day}>{day}</div>)}
+                {['D', 'L', 'M', 'M', 'J', 'V', 'S'].map((day) => (
+                    <div key={day}>
+                        {day}
+                    </div>
+                ))}
             </div>
+
             <div className="grid grid-cols-7 gap-1">
-                {renderDays()}
+                {/* Empty slots for days before the 1st */}
+                {Array.from({ length: firstDayOfMonth }).map((_, index) => (
+                    <div key={`empty-${index}`} className="w-full h-12" />
+                ))}
+
+                {/* Days of the month */}
+                {Array.from({ length: daysInMonth }).map((_, index) => {
+                    const day = index + 1;
+                    const currentDate = new Date(year, month, day); // Use local time for consistency with getDayType
+                    const dayType = getDayType(currentDate);
+
+                    let style = '';
+                    switch (dayType) {
+                        case DayType.Work:
+                            style = 'bg-blue-100/50 text-blue-700 font-medium';
+                            break;
+                        case DayType.Rest:
+                            style = 'bg-green-100/50 text-green-700 font-medium';
+                            break;
+                        case DayType.Departure:
+                            style = 'bg-indigo-600 text-white font-bold shadow-md transform scale-105';
+                            break;
+                        case DayType.Return:
+                            style = 'bg-purple-600 text-white font-bold shadow-md transform scale-105';
+                            break;
+                        default:
+                            style = 'text-gray-900 hover:bg-gray-100 font-medium';
+                    }
+
+                    // Special styling for today
+                    const today = new Date();
+                    const isToday = currentDate.getFullYear() === today.getFullYear() &&
+                        currentDate.getMonth() === today.getMonth() &&
+                        currentDate.getDate() === today.getDate();
+                    if (isToday) {
+                        style += ' ring-2 ring-offset-2 ring-indigo-400';
+                    }
+
+                    return (
+                        <div
+                            key={day}
+                            onClick={() => onDateSelect(currentDate)}
+                            className={`w-full h-12 flex flex-col items-center justify-center space-y-1 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-sm cursor-pointer ${style} ${dayType === DayType.None ? 'hover:bg-gray-300' : 'hover:brightness-95'}`}
+                        >
+                            <span className="text-sm">{day}</span>
+                            {dayType === DayType.Departure && <DepartureIcon className="w-3 h-3" />}
+                            {dayType === DayType.Return && <ReturnIcon className="w-3 h-3" />}
+                        </div>
+                    );
+                })}
             </div>
+
+            {/* Adjustments Feedback */}
+            {adjustments.length > 0 && (
+                <div className="mt-4 pt-3 border-t border-gray-200 space-y-1">
+                    {adjustments.map((adj, idx) => (
+                        <div key={idx} className="text-[10px] text-amber-600 font-bold flex items-center bg-amber-50 p-1.5 rounded-md border border-amber-100">
+                            <span className="mr-1">⚠️</span>
+                            Ajuste: +{adj.daysAdded} días para regresar en {adj.targetDayName}
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
