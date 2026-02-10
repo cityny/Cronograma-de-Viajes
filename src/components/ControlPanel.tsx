@@ -129,16 +129,16 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             </div>
 
             <div className="mb-6">
-                <div className="flex justify-between items-center mb-3">
+                <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
                     <label className="flex items-center text-sm font-semibold text-gray-800 uppercase tracking-wider">
                         <BriefcaseIcon className="w-4 h-4 mr-2" />
-                        Días de Trabajo (Periodo)
+                        Días de Trabajo
                         <InfoTooltip
                             text="Cantidad de días consecutivos que trabajas antes de tu descanso."
                             example="21 días (3 semanas)."
                         />
                     </label>
-                    <span className="bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    <span className="bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">
                         {workDays} días
                     </span>
                 </div>
@@ -160,7 +160,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             </div>
 
             <div className="mb-6">
-                <div className="flex justify-between items-center mb-3">
+                <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
                     <label className="flex items-center text-sm font-semibold text-gray-800 uppercase tracking-wider">
                         <HomeIcon className="w-4 h-4 mr-2" />
                         Días de Descanso (Total)
@@ -169,7 +169,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                             example="9 días."
                         />
                     </label>
-                    <span className="bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    <span className="bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">
                         {minRestDays} días
                     </span>
                 </div>
