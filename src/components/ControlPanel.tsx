@@ -3,6 +3,7 @@ import { LEGEND_ITEMS, DAY_NAMES } from '../constants/constants';
 import { DepartureIcon, ReturnIcon, CalendarIcon, BriefcaseIcon, HomeIcon } from './Icons';
 import CustomDatePicker from './CustomDatePicker';
 import DaySelector from './DaySelector';
+import InfoTooltip from './InfoTooltip';
 
 // Declare jspdf and html2canvas to be available in the global scope from CDN
 declare const jspdf: any;
@@ -14,9 +15,6 @@ interface ControlPanelProps {
     departureDay: number;
     onDepartureDayChange: (day: number) => void;
     returnDay: number | null;
-    onReturnDayChange: (day: number | null) => void;
-    returnDay: number | null;
-    onReturnDayChange: (day: number | null) => void;
     workDays: number;
     onWorkDaysChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     minRestDays?: number;
@@ -119,6 +117,10 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 <label className="flex items-center text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wider">
                     <CalendarIcon className="w-4 h-4 mr-2" />
                     Seleccione Fecha de Inicio
+                    <InfoTooltip
+                        text="Define cuándo comienza tu ciclo laboral."
+                        example="Si llegaste el Lunes 1 de Enero, selecciona esa fecha."
+                    />
                 </label>
                 <CustomDatePicker
                     value={startDateString}
@@ -131,6 +133,10 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                     <label className="flex items-center text-sm font-semibold text-gray-800 uppercase tracking-wider">
                         <BriefcaseIcon className="w-4 h-4 mr-2" />
                         Días de Trabajo (Periodo)
+                        <InfoTooltip
+                            text="Cantidad de días consecutivos que trabajas antes de tu descanso."
+                            example="21 días (3 semanas)."
+                        />
                     </label>
                     <span className="bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full">
                         {workDays} días
@@ -158,6 +164,10 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                     <label className="flex items-center text-sm font-semibold text-gray-800 uppercase tracking-wider">
                         <HomeIcon className="w-4 h-4 mr-2" />
                         Días de Descanso (Total)
+                        <InfoTooltip
+                            text="Días totales de descanso (incluyendo viajes) antes de volver a trabajar."
+                            example="9 días."
+                        />
                     </label>
                     <span className="bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                         {minRestDays} días
@@ -184,6 +194,10 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 <label className="flex items-center text-sm font-semibold text-gray-800 mb-3 uppercase tracking-wider">
                     <DepartureIcon className="w-4 h-4 mr-2" />
                     Día de Salida
+                    <InfoTooltip
+                        text="Día de la semana en que usualmente viajas de regreso a casa."
+                        example="Viernes."
+                    />
                 </label>
                 {isCapturing ? (
                     <div className="w-full px-3 py-2 border border-gray-200 rounded-xl bg-gray-50 text-gray-800 font-bold">
@@ -203,6 +217,10 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                     <label className="flex items-center text-sm font-semibold text-gray-800 uppercase tracking-wider">
                         <ReturnIcon className="w-4 h-4 mr-2" />
                         Día de Regreso
+                        <InfoTooltip
+                            text="Día en que debes estar de vuelta o reinicias labores."
+                            example="'Auto' lo calcula por ti. Ejemplo: Domingo."
+                        />
                     </label>
                     <div className="flex items-center space-x-2">
                         <span className={`text-xs font-bold ${returnDay === null ? 'text-indigo-600' : 'text-gray-400'}`}>Auto</span>
