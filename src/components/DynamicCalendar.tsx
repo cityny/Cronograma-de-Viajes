@@ -25,7 +25,7 @@ const DynamicCalendar: React.FC<DynamicCalendarProps> = ({ startDate, departureD
                         month={month}
                         getDayType={getDayType}
                         onDateSelect={onDateSelect}
-                        adjustments={cycleAdjustments?.get(`${year}-${month - 1}`) || []}
+                        adjustments={cycleAdjustments?.get(`${year}-${month}`) || []}
                     />
                 ))}
             </div>

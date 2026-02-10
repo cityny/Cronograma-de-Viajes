@@ -67,18 +67,29 @@ export const useTravelCycles = ({ startDate, departureDay, workDays, returnDay =
                 // we might want a list, but for simplicity let's store the last significant one or a specialized message.
                 // Let's store a cumulative text for the month.
                 const currentAdj = adjustmentMap.get(returnMonthKey) || [];
-                currentAdj.push({
-                    date: toUTCDateString(returnDate),
-                    daysAdded: adjustmentDays,
-                    targetDayName: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'][returnDay!]
-                });
-                adjustmentMap.set(returnMonthKey, currentAdj);
+
+                // Deduplicate: Check if an adjustment for this specific date already exists
+                const dateString = toUTCDateString(returnDate);
+                const isDuplicate = currentAdj.some(adj => adj.date === dateString);
+
+                if (!isDuplicate) {
+                    currentAdj.push({
+                        date: dateString,
+                        daysAdded: adjustmentDays,
+                        targetDayName: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'][returnDay!]
+                    });
+                    adjustmentMap.set(returnMonthKey, currentAdj);
+                }
             }
 
             // Fill map for Work days
             let currentDate = new Date(cycleStartDate);
             while (currentDate < departureDate) {
-                map.set(toUTCDateString(currentDate), DayType.Work);
+                const dateStr = toUTCDateString(currentDate);
+                // Prevent overwriting a previous cycle's Return day if overlap occurs
+                if (!map.has(dateStr)) {
+                    map.set(dateStr, DayType.Work);
+                }
                 currentDate.setUTCDate(currentDate.getUTCDate() + 1);
             }
 

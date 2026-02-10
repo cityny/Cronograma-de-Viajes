@@ -37,7 +37,8 @@ const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSe
                 {/* Days of the month */}
                 {Array.from({ length: daysInMonth }).map((_, index) => {
                     const day = index + 1;
-                    const currentDate = new Date(year, month, day); // Use local time for consistency with getDayType
+                    // Construct UTC date for consistent key lookup
+                    const currentDate = new Date(Date.UTC(year, month, day));
                     const dayType = getDayType(currentDate);
 
                     let style = '';
@@ -87,7 +88,8 @@ const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSe
                     {adjustments.map((adj, idx) => (
                         <div key={idx} className="text-[10px] text-amber-600 font-bold flex items-center bg-amber-50 p-1.5 rounded-md border border-amber-100">
                             <span className="mr-1">⚠️</span>
-                            Ajuste: +{adj.daysAdded} días para regresar en {adj.targetDayName}
+                            {/* Format date as simple DD/MM for context */}
+                            {new Date(adj.date).getUTCDate()}/{new Date(adj.date).getUTCMonth() + 1}: +{adj.daysAdded}d (Regreso {adj.targetDayName})
                         </div>
                     ))}
                 </div>
