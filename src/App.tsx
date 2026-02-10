@@ -48,19 +48,22 @@ const App: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
             <header className="bg-white shadow-md">
-                <div className="container mx-auto px-4 py-6">
-                    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-                        Planificador inteligente de ciclos de trabajo
-                        <InfoTooltip
-                            side="bottom"
-                            text="Es una aplicación web interactiva diseñada para calcular y visualizar itinerarios de viaje basados en ciclos de trabajo rotativos. Permite a los usuarios definir su fecha de inicio, días de salida/regreso y duración del periodo laboral para generar automáticamente un calendario anual."
-                        />
-                    </h1>
-                    <div className="mt-2 flex items-center text-xs text-gray-500 font-medium">
-                        Desarrollado por: <br />
-                        <h2 className="text-xs text-gray-500 font-medium">Dionny Nuñez</h2><br />
-                        <a href="https://cityny.github.io/cityny/index.html" target="_blank" rel="noopener noreferrer" className="ml-2 hover:opacity-80 transition-opacity">
-                            <img src={LogoCityNy} alt="CityNy Logo" className="h-12 w-auto" />
+                <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+                            Planificador inteligente de ciclos de trabajo
+                            <InfoTooltip
+                                side="bottom"
+                                text="Es una aplicación web interactiva diseñada para calcular y visualizar itinerarios de viaje basados en ciclos de trabajo rotativos. Permite a los usuarios definir su fecha de inicio, días de salida/regreso y duración del periodo laboral para generar automáticamente un calendario anual."
+                            />
+                        </h1>
+                    </div>
+                    <div className="flex flex-col items-start md:items-end">
+                        <div className="text-[10px] md:text-xs text-gray-800 font-medium mb-1">
+                            Desarrollado por: <span className="font-bold">Dionny Nuñez</span>
+                        </div>
+                        <a href="https://cityny.github.io/cityny/index.html" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+                            <img src={LogoCityNy} alt="CityNy Logo" className="h-10 md:h-12 w-auto" />
                         </a>
                     </div>
                 </div>
