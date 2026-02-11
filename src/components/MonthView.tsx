@@ -61,9 +61,9 @@ const MonthView: React.FC<MonthViewProps> = ({ year, month, getDayType, onDateSe
 
                     // Special styling for today
                     const today = new Date();
-                    const isToday = currentDate.getFullYear() === today.getFullYear() &&
-                        currentDate.getMonth() === today.getMonth() &&
-                        currentDate.getDate() === today.getDate();
+                    const isToday = currentDate.getUTCFullYear() === today.getFullYear() &&
+                        currentDate.getUTCMonth() === today.getMonth() &&
+                        currentDate.getUTCDate() === today.getDate();
                     if (isToday) {
                         style += ' ring-2 ring-offset-2 ring-indigo-400';
                     }
