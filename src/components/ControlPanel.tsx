@@ -9,6 +9,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import PDFDocument from './PDFDocument';
 import { clearCronogramaStorage } from '../hooks/useLocalStorage';
 import { getTodayString } from '../utils/dateUtils';
+import ConfirmDialog from './ConfirmDialog';
 
 // REMOVE: declare const jspdf: any;
 // REMOVE: declare const html2canvas: any;
@@ -42,6 +43,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
     onResetToDefaults
 }) => {
     const [isCapturing, setIsCapturing] = useState(false);
+    const [showResetDialog, setShowResetDialog] = useState(false);
 
     // Old html2canvas logic removed
 
@@ -242,18 +244,30 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             )}
 
             {onResetToDefaults && (
-                <button
-                    onClick={() => {
-                        if (window.confirm('¿Estás seguro de que deseas restaurar la configuración por defecto? Esta acción no se puede deshacer.')) {
+                <>
+                    <button
+                        onClick={() => setShowResetDialog(true)}
+                        className="w-full mt-3 bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded-xl border border-gray-300 hover:bg-gray-200 hover:border-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 flex items-center justify-center gap-2"
+                    >
+                        <RefreshIcon className="w-5 h-5" />
+                        Restaurar Valores por Defecto
+                    </button>
+
+                    <ConfirmDialog
+                        isOpen={showResetDialog}
+                        title="¿Restaurar valores por defecto?"
+                        message="Esta acción restablecerá toda la configuración a sus valores iniciales. Los datos guardados se eliminarán del navegador."
+                        confirmText="Restaurar"
+                        cancelText="Cancelar"
+                        type="warning"
+                        onConfirm={() => {
                             clearCronogramaStorage();
                             onResetToDefaults();
-                        }
-                    }}
-                    className="w-full mt-3 bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded-xl border border-gray-300 hover:bg-gray-200 hover:border-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 flex items-center justify-center gap-2"
-                >
-                    <RefreshIcon className="w-5 h-5" />
-                    Restaurar Valores por Defecto
-                </button>
+                            setShowResetDialog(false);
+                        }}
+                        onCancel={() => setShowResetDialog(false)}
+                    />
+                </>
             )}
         </div>
     );
