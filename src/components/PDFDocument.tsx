@@ -254,11 +254,11 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
                                 let fontWeight: any = 'normal';
 
                                 if (day.type === DayType.Work) {
-                                    bg = '#EEF2FF'; // Indigo 50
-                                    color = '#3f36f0ff'; // Indigo 600
+                                    bg = '#dbe2ffff'; // Indigo 50
+                                    color = '#0c00f4ff'; // Indigo 600
                                 } else if (day.type === DayType.Rest) {
-                                    bg = '#ECFDF5'; // Emerald 50
-                                    color = '#05963dff'; // Emerald 600
+                                    bg = '#cfffe9ff'; // Emerald 50
+                                    color = '#009b3bff'; // Emerald 600
                                 } else if (day.type === DayType.Departure) {
                                     bg = '#2563EB'; // Blue 600
                                     color = '#FFFFFF';
