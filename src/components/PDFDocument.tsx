@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 12,
         fontWeight: 'bold',
-        color: '#374151',
+        color: '#31381cff',
         marginBottom: 8,
         marginTop: 10,
         textTransform: 'uppercase',
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     configLabel: {
         fontSize: 8,
-        color: '#6B7280',
+        color: '#041e26ff',
         textTransform: 'uppercase',
     },
     configValue: {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         width: '24%',
         marginBottom: 4,
         borderWidth: 0.5,
-        borderColor: '#E5E7EB',
+        borderColor: '#9fa0a4ff',
         borderRadius: 2,
         padding: 2,
     },
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 4,
-        color: '#374151',
-        backgroundColor: '#F9FAFB',
+        color: '#090909ff',
+        backgroundColor: '#c0c0c0ff',
         padding: 2,
     },
     weekHeader: {
@@ -99,8 +99,10 @@ const styles = StyleSheet.create({
     dayHeader: {
         width: '14.28%',
         fontSize: 6,
+        fontWeight: 'bold',
         textAlign: 'center',
-        color: '#9CA3AF',
+        backgroundColor: '#e8e7e7ff',
+        color: '#060606ff',
     },
     daysGrid: {
         flexDirection: 'row',
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     },
     legendText: {
         fontSize: 8,
-        color: '#4B5563',
+        color: '#000000ff',
     },
     footer: {
         position: 'absolute',
@@ -253,10 +255,10 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
 
                                 if (day.type === DayType.Work) {
                                     bg = '#EEF2FF'; // Indigo 50
-                                    color = '#4F46E5'; // Indigo 600
+                                    color = '#3f36f0ff'; // Indigo 600
                                 } else if (day.type === DayType.Rest) {
                                     bg = '#ECFDF5'; // Emerald 50
-                                    color = '#059669'; // Emerald 600
+                                    color = '#05963dff'; // Emerald 600
                                 } else if (day.type === DayType.Departure) {
                                     bg = '#2563EB'; // Blue 600
                                     color = '#FFFFFF';
@@ -283,11 +285,11 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
             {/* Legend */}
             <View style={styles.legendContainer}>
                 <View style={styles.legendItem}>
-                    <View style={[styles.legendBox, { backgroundColor: '#EEF2FF' }]} />
+                    <View style={[styles.legendBox, { backgroundColor: '#7490edff' }]} />
                     <Text style={styles.legendText}>Días de Trabajo</Text>
                 </View>
                 <View style={styles.legendItem}>
-                    <View style={[styles.legendBox, { backgroundColor: '#ECFDF5' }]} />
+                    <View style={[styles.legendBox, { backgroundColor: '#4cec8fff' }]} />
                     <Text style={styles.legendText}>Días de Descanso</Text>
                 </View>
                 <View style={styles.legendItem}>
