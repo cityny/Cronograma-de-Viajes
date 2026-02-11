@@ -171,7 +171,17 @@ const styles = StyleSheet.create({
     devText: {
         fontSize: 8,
         color: '#6B7280',
-        marginRight: 5
+        marginRight: 3
+    },
+    devName: {
+        fontSize: 8,
+        fontWeight: 'bold',
+        color: '#4F46E5', // Indigo 600
+    },
+    authorIcon: {
+        width: 10,
+        height: 10,
+        marginRight: 4,
     },
     devLogo: {
         width: 60,
@@ -233,9 +243,32 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
                     )}
                     <Text style={styles.subtitle}>Planificador Inteligente de Ciclos</Text>
                 </View>
-                {/* We create a simple branding section if no logo is provided or as text */}
+                {/* Branding section */}
                 <View style={styles.developedBy}>
-                    <Text style={styles.devText}>Desarrollado por: Dionny Nuñez</Text>
+                    <Svg viewBox="0 0 24 24" style={styles.authorIcon}>
+                        <Path
+                            d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                            fill="none"
+                            stroke="#6B7280"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <Circle
+                            cx="12"
+                            cy="7"
+                            r="4"
+                            fill="none"
+                            stroke="#6B7280"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </Svg>
+                    <Text style={styles.devText}>Desarrollado por: </Text>
+                    <Link src="https://cityny.github.io/cityny/index.html" style={{ textDecoration: 'none' }}>
+                        <Text style={styles.devName}>Dionny Nuñez</Text>
+                    </Link>
                 </View>
             </View>
 
