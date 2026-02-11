@@ -6,6 +6,9 @@ import ScrollToTop from './components/ScrollToTop';
 import InfoTooltip from './components/InfoTooltip';
 import LogoCityNy from './assets/Logo_CityNy.gif';
 
+import { useTravelCycles } from './hooks/useTravelCycles';
+import { DayType } from './types/types';
+
 const App: React.FC = () => {
     const [startDateString, setStartDateString] = useState<string>(getTodayString());
     const [departureDay, setDepartureDay] = useState<number>(5); // Default to Friday
@@ -45,6 +48,38 @@ const App: React.FC = () => {
         return new Date(Date.UTC(year, month - 1, day));
     }, [startDateString]);
 
+    // Generate data for PDF
+    const { getDayType, monthsToRender } = useTravelCycles({
+        startDate: startDate || new Date(),
+        departureDay,
+        workDays,
+        returnDay,
+        minRestDays
+    });
+
+    const monthsData = useMemo(() => {
+        if (!startDate) return [];
+        return monthsToRender.map(({ year, month }) => {
+            const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+            const startDay = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
+            const monthName = new Date(Date.UTC(year, month - 1, 1)).toLocaleString('es-ES', { month: 'long' });
+
+            const days = [];
+            for (let d = 1; d <= daysInMonth; d++) {
+                const current = new Date(Date.UTC(year, month - 1, d));
+                const type = getDayType(current);
+                days.push({ day: d, type });
+            }
+
+            return {
+                name: monthName.charAt(0).toUpperCase() + monthName.slice(1),
+                year,
+                startDay,
+                days
+            };
+        });
+    }, [startDate, monthsToRender, getDayType]);
+
     return (
         <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
             <header className="bg-white shadow-md">
@@ -82,6 +117,7 @@ const App: React.FC = () => {
                             onWorkDaysChange={handleWorkDaysChange}
                             minRestDays={minRestDays}
                             onMinRestDaysChange={handleMinRestDaysChange}
+                            monthsData={monthsData}
                         />
                     </div>
                     <div className="lg:col-span-3">

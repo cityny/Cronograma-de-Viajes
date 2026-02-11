@@ -7,7 +7,7 @@ export enum DayType {
     Return,
 }
 
-export interface DayInfo {
+export interface CalendarDay {
     date: Date;
     dayOfMonth: number;
     type: DayType;

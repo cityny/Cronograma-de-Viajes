@@ -5,9 +5,11 @@ import CustomDatePicker from './CustomDatePicker';
 import DaySelector from './DaySelector';
 import InfoTooltip from './InfoTooltip';
 
-// Declare jspdf and html2canvas to be available in the global scope from CDN
-declare const jspdf: any;
-declare const html2canvas: any;
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import PDFDocument from './PDFDocument';
+
+// REMOVE: declare const jspdf: any;
+// REMOVE: declare const html2canvas: any;
 
 interface ControlPanelProps {
     startDateString: string;
@@ -19,6 +21,7 @@ interface ControlPanelProps {
     onWorkDaysChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     minRestDays?: number;
     onMinRestDaysChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    monthsData?: any[]; // Data for PDF generation
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -31,78 +34,12 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
     workDays,
     onWorkDaysChange,
     minRestDays = 7,
-    onMinRestDaysChange = () => { }
+    onMinRestDaysChange = () => { },
+    monthsData = []
 }) => {
     const [isCapturing, setIsCapturing] = useState(false);
 
-    const handleExportScreenshot = () => {
-        const exportButton = document.getElementById('export-screenshot-button');
-        if (exportButton) {
-            exportButton.textContent = 'Generando PDF...';
-            (exportButton as HTMLButtonElement).disabled = true;
-        }
-
-        setIsCapturing(true);
-
-        // Use a short timeout to allow React to re-render the component
-        // with the static text before html2canvas starts capturing.
-        setTimeout(() => {
-            const appElement = document.getElementById('root');
-            if (!appElement) {
-                if (exportButton) {
-                    exportButton.textContent = 'Error: No se encontró la app';
-                }
-                setIsCapturing(false);
-                setTimeout(() => {
-                    if (exportButton) {
-                        exportButton.textContent = 'Crear PDF (Captura de Pantalla)';
-                        (exportButton as HTMLButtonElement).disabled = false;
-                    }
-                }, 2000);
-                return;
-            }
-
-            const options = {
-                scale: 2, // Higher scale for better quality
-                useCORS: true,
-                width: appElement.scrollWidth,
-                height: appElement.scrollHeight,
-                windowWidth: appElement.scrollWidth,
-                windowHeight: appElement.scrollHeight,
-            };
-
-            html2canvas(appElement, options).then((canvas: HTMLCanvasElement) => {
-                const imgData = canvas.toDataURL('image/png');
-                const { jsPDF } = jspdf;
-
-                const imgWidth = canvas.width;
-                const imgHeight = canvas.height;
-                const orientation = imgWidth > imgHeight ? 'l' : 'p';
-
-                const pdf = new jsPDF({
-                    orientation: orientation,
-                    unit: 'px',
-                    format: [imgWidth, imgHeight],
-                });
-
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                pdf.save('cronograma-captura.pdf');
-            }).catch(error => {
-                console.error('Error al generar el PDF:', error);
-                if (exportButton) {
-                    exportButton.textContent = 'Error al generar PDF';
-                }
-            }).finally(() => {
-                setIsCapturing(false);
-                if (exportButton) {
-                    setTimeout(() => {
-                        exportButton.textContent = 'Crear PDF (Captura de Pantalla)';
-                        (exportButton as HTMLButtonElement).disabled = false;
-                    }, 1000);
-                }
-            });
-        }, 100);
-    };
+    // Old html2canvas logic removed
 
     return (
         <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 sticky top-4">
@@ -271,13 +208,33 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 </ul>
             </div>
 
-            <button
-                id="export-screenshot-button"
-                onClick={handleExportScreenshot}
-                className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-indigo-200 hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-                Exportar Calendario (PDF)
-            </button>
+            {startDateString ? (
+                <PDFDownloadLink
+                    document={
+                        <PDFDocument
+                            startDate={startDateString}
+                            workDays={workDays}
+                            restDays={minRestDays}
+                            departureDay={DAY_NAMES[departureDay]}
+                            returnDay={returnDay !== null ? DAY_NAMES[returnDay] : 'Automático'}
+                            monthsData={monthsData}
+                        />
+                    }
+                    fileName="cronograma-de-viajes.pdf"
+                    className="w-full block text-center bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-indigo-200 hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                    {({ blob, url, loading, error }) =>
+                        loading ? 'Generando PDF...' : 'Descargar Cronograma PDF'
+                    }
+                </PDFDownloadLink>
+            ) : (
+                <button
+                    disabled
+                    className="w-full bg-gray-300 text-gray-500 font-bold py-3 px-4 rounded-xl cursor-not-allowed"
+                >
+                    Seleccione fecha para descargar
+                </button>
+            )}
         </div>
     );
 };
