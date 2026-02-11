@@ -7,14 +7,15 @@ import InfoTooltip from './components/InfoTooltip';
 import LogoCityNy from './assets/Logo_CityNy.gif';
 
 import { useTravelCycles } from './hooks/useTravelCycles';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import { DayType } from './types/types';
 
 const App: React.FC = () => {
-    const [startDateString, setStartDateString] = useState<string>(getTodayString());
-    const [departureDay, setDepartureDay] = useState<number>(5); // Default to Friday
-    const [returnDay, setReturnDay] = useState<number | null>(null); // Default to Auto (null)
-    const [workDays, setWorkDays] = useState<number>(21);      // Default to 21 days
-    const [minRestDays, setMinRestDays] = useState<number>(9); // Default to 9 days total
+    const [startDateString, setStartDateString] = useLocalStorage<string>('cronograma-startDate', getTodayString());
+    const [departureDay, setDepartureDay] = useLocalStorage<number>('cronograma-departureDay', 5); // Default to Friday
+    const [returnDay, setReturnDay] = useLocalStorage<number | null>('cronograma-returnDay', null); // Default to Auto (null)
+    const [workDays, setWorkDays] = useLocalStorage<number>('cronograma-workDays', 21);      // Default to 21 days
+    const [minRestDays, setMinRestDays] = useLocalStorage<number>('cronograma-restDays', 9); // Default to 9 days total
 
     const handleDateChange = (date: string) => {
         setStartDateString(date);
@@ -38,6 +39,14 @@ const App: React.FC = () => {
 
     const handleMinRestDaysChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setMinRestDays(Number(e.target.value));
+    };
+
+    const handleResetToDefaults = () => {
+        setStartDateString(getTodayString());
+        setDepartureDay(5); // Friday
+        setReturnDay(null); // Auto
+        setWorkDays(21);
+        setMinRestDays(9);
     };
 
     // Memoize the Date object to prevent unnecessary re-renders of the calendar
@@ -118,6 +127,7 @@ const App: React.FC = () => {
                             minRestDays={minRestDays}
                             onMinRestDaysChange={handleMinRestDaysChange}
                             monthsData={monthsData}
+                            onResetToDefaults={handleResetToDefaults}
                         />
                     </div>
                     <div className="lg:col-span-3">

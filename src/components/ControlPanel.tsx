@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { LEGEND_ITEMS, DAY_NAMES } from '../constants/constants';
-import { DepartureIcon, ReturnIcon, CalendarIcon, BriefcaseIcon, HomeIcon } from './Icons';
+import { DepartureIcon, ReturnIcon, CalendarIcon, BriefcaseIcon, HomeIcon, RefreshIcon } from './Icons';
 import CustomDatePicker from './CustomDatePicker';
 import DaySelector from './DaySelector';
 import InfoTooltip from './InfoTooltip';
 
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import PDFDocument from './PDFDocument';
+import { clearCronogramaStorage } from '../hooks/useLocalStorage';
+import { getTodayString } from '../utils/dateUtils';
 
 // REMOVE: declare const jspdf: any;
 // REMOVE: declare const html2canvas: any;
@@ -22,6 +24,7 @@ interface ControlPanelProps {
     minRestDays?: number;
     onMinRestDaysChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     monthsData?: any[]; // Data for PDF generation
+    onResetToDefaults?: () => void; // Callback to reset all values
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -35,7 +38,8 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
     onWorkDaysChange,
     minRestDays = 7,
     onMinRestDaysChange = () => { },
-    monthsData = []
+    monthsData = [],
+    onResetToDefaults
 }) => {
     const [isCapturing, setIsCapturing] = useState(false);
 
@@ -234,6 +238,21 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                     className="w-full bg-gray-300 text-gray-500 font-bold py-3 px-4 rounded-xl cursor-not-allowed"
                 >
                     Seleccione fecha para descargar
+                </button>
+            )}
+
+            {onResetToDefaults && (
+                <button
+                    onClick={() => {
+                        if (window.confirm('¿Estás seguro de que deseas restaurar la configuración por defecto? Esta acción no se puede deshacer.')) {
+                            clearCronogramaStorage();
+                            onResetToDefaults();
+                        }
+                    }}
+                    className="w-full mt-3 bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded-xl border border-gray-300 hover:bg-gray-200 hover:border-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 flex items-center justify-center gap-2"
+                >
+                    <RefreshIcon className="w-5 h-5" />
+                    Restaurar Valores por Defecto
                 </button>
             )}
         </div>
