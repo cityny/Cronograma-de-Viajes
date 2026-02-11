@@ -218,6 +218,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                             departureDay={DAY_NAMES[departureDay]}
                             returnDay={returnDay !== null ? DAY_NAMES[returnDay] : 'Automático'}
                             monthsData={monthsData}
+                            currentUrl={window.location.origin}
                         />
                     }
                     fileName="cronograma-de-viajes.pdf"

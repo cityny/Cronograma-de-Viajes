@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Image, Font, Link, Svg, Path, Circle } from '@react-pdf/renderer';
 import { DayType, CalendarDay } from '../types/types';
 
 // Register a nice font (optional, using Helvetica by default is fine for now)
@@ -30,6 +30,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: '#111827',
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    shareIcon: {
+        width: 12,
+        height: 12,
+        marginLeft: 4,
     },
     subtitle: {
         fontSize: 10,
@@ -178,6 +187,7 @@ interface PDFDocumentProps {
     returnDay: string;
     monthsData: any[]; // We will pass the processed months data here
     logoUrl?: string; // Optional logo URL if we want to pass a base64 or static asset
+    currentUrl?: string; // App's current location
 }
 
 const PDFDocument: React.FC<PDFDocumentProps> = ({
@@ -187,14 +197,40 @@ const PDFDocument: React.FC<PDFDocumentProps> = ({
     departureDay,
     returnDay,
     monthsData,
-    logoUrl
+    logoUrl,
+    currentUrl
 }) => (
     <Document>
         <Page size="A4" style={styles.page} orientation="landscape">
             {/* Header */}
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <Text style={styles.title}>Cronograma de Viajes</Text>
+                    {currentUrl ? (
+                        <Link src={currentUrl} style={{ textDecoration: 'none' }}>
+                            <View style={styles.titleContainer}>
+                                <Text style={styles.title}>Cronograma de Viajes</Text>
+                                <Svg viewBox="0 0 24 24" style={styles.shareIcon}>
+                                    <Circle cx="18" cy="5" r="3" stroke="#6366f1" strokeWidth="2" fill="none" />
+                                    <Circle cx="6" cy="12" r="3" stroke="#6366f1" strokeWidth="2" fill="none" />
+                                    <Circle cx="18" cy="19" r="3" stroke="#6366f1" strokeWidth="2" fill="none" />
+                                    <Path
+                                        d="M8.59 13.51l6.82 3.98"
+                                        stroke="#6366f1"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                    />
+                                    <Path
+                                        d="M15.41 6.51l-6.82 3.98"
+                                        stroke="#6366f1"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                    />
+                                </Svg>
+                            </View>
+                        </Link>
+                    ) : (
+                        <Text style={styles.title}>Cronograma de Viajes</Text>
+                    )}
                     <Text style={styles.subtitle}>Planificador Inteligente de Ciclos</Text>
                 </View>
                 {/* We create a simple branding section if no logo is provided or as text */}
