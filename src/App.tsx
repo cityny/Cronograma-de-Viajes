@@ -71,7 +71,7 @@ const App: React.FC = () => {
         return monthsToRender.map(({ year, month }) => {
             const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
             const startDay = new Date(Date.UTC(year, month, 1)).getUTCDay();
-            const monthName = new Date(Date.UTC(year, month, 1)).toLocaleString('es-ES', { month: 'long' });
+            const monthName = new Intl.DateTimeFormat('es-ES', { month: 'long', timeZone: 'UTC' }).format(new Date(Date.UTC(year, month, 1)));
 
             const days = [];
             for (let d = 1; d <= daysInMonth; d++) {
