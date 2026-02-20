@@ -90,7 +90,7 @@ const App: React.FC = () => {
     }, [startDate, monthsToRender, getDayType]);
 
     return (
-        <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
+        <div className="min-h-screen flex flex-col bg-gray-50 font-sans text-gray-800">
             <header className="bg-white shadow-md">
                 <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
@@ -106,13 +106,10 @@ const App: React.FC = () => {
                         <div className="text-[10px] md:text-xs text-gray-800 font-medium mb-1">
                             Desarrollado por: <span className="font-bold">Dionny Nuñez</span>
                         </div>
-                        <a href="https://cityny.github.io/cityny/index.html" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
-                            <img src={LogoCityNy} alt="CityNy Logo" className="h-10 md:h-12 w-auto" />
-                        </a>
                     </div>
                 </div>
             </header>
-            <main className="container mx-auto p-4">
+            <main className="container mx-auto p-4 flex-grow">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-1">
                         <ControlPanel
@@ -148,6 +145,16 @@ const App: React.FC = () => {
                     </div>
                 </div>
             </main>
+            <footer className="bg-white border-t py-8 mt-auto">
+                <div className="container mx-auto px-4 flex flex-col items-center justify-center gap-4">
+                    <a href="https://cityny.github.io/cityny/index.html" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+                        <img src={LogoCityNy} alt="CityNy Logo" className="h-16 w-auto" />
+                    </a>
+                    <p className="text-gray-500 text-sm">
+                        © {new Date().getFullYear()} Dionny Nuñez - CityNy Development. Todos los derechos reservados.
+                    </p>
+                </div>
+            </footer>
             <ScrollToTop />
         </div>
     );
