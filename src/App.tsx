@@ -69,13 +69,13 @@ const App: React.FC = () => {
     const monthsData = useMemo(() => {
         if (!startDate) return [];
         return monthsToRender.map(({ year, month }) => {
-            const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
-            const startDay = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
-            const monthName = new Date(Date.UTC(year, month - 1, 1)).toLocaleString('es-ES', { month: 'long' });
+            const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+            const startDay = new Date(Date.UTC(year, month, 1)).getUTCDay();
+            const monthName = new Date(Date.UTC(year, month, 1)).toLocaleString('es-ES', { month: 'long' });
 
             const days = [];
             for (let d = 1; d <= daysInMonth; d++) {
-                const current = new Date(Date.UTC(year, month - 1, d));
+                const current = new Date(Date.UTC(year, month, d));
                 const type = getDayType(current);
                 days.push({ day: d, type });
             }
